@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Medical Stats Analyzer</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>Medical Statistics Analyzer</h1>
+
+    <form id="promptForm">
+      <textarea
+        name="prompt"
+        rows="5"
+        cols="50"
+        placeholder="Введите запрос..."
+      ></textarea>
+      <br />
+      <button type="submit">Анализировать</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      document.getElementById("promptForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const prompt = document.querySelector('textarea[name="prompt"]').value;
+
+        const response = await fetch("/analyze/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt }),
+        });
+
+        const result = await response.json();
+        document.getElementById("result").innerHTML =
+          "<pre>" + JSON.stringify(result, null, 2) + "</pre>";
+      };
+    </script>
+  </body>
+</html>
